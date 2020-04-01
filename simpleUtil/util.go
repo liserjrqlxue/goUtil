@@ -1,4 +1,4 @@
-package simple_util
+package simpleUtil
 
 import (
 	"log"
