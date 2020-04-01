@@ -1,6 +1,10 @@
 package stringsUtil
 
-import "strings"
+import (
+	"github.com/liserjrqlxue/goUtil/simpleUtil"
+	"strconv"
+	"strings"
+)
 
 // try to convert string to given width
 func FormatWidth(width int, str string, fill byte) string {
@@ -16,4 +20,12 @@ func FormatWidth(width int, str string, fill byte) string {
 		}
 	}
 	return str
+}
+
+// plus for int in string format
+func StringPlus(str string, num int) string {
+	strInt, err := strconv.Atoi(str)
+	simpleUtil.CheckErr(err)
+	strInt += num
+	return strconv.Itoa(strInt)
 }
