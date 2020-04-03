@@ -24,7 +24,7 @@ func FormatWidth(width int, str string, fill byte) string {
 
 // plus for int in string format
 func StringPlus(str string, num int) string {
-	strInt, err := strconv.Atoi(str)
+	var strInt, err = strconv.Atoi(str)
 	simpleUtil.CheckErr(err)
 	strInt += num
 	return strconv.Itoa(strInt)
