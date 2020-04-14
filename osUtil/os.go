@@ -24,3 +24,9 @@ func WriteClose(file *os.File, b []byte) int {
 	simpleUtil.CheckErr(err)
 	return n
 }
+
+func Open(fileName string) *os.File {
+	var file, err = os.Open(fileName)
+	simpleUtil.CheckErr(err)
+	return file
+}
