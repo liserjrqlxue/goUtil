@@ -29,3 +29,10 @@ func StringPlus(str string, num int) string {
 	strInt += num
 	return strconv.Itoa(strInt)
 }
+
+// wrap of strconv.Atoi
+func Atoi(str string) int {
+	var v, e = strconv.Atoi(str)
+	simpleUtil.CheckErr(e)
+	return v
+}
