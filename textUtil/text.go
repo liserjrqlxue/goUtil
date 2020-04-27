@@ -29,7 +29,19 @@ func File2Map(fileName, sep string, override bool) (map[string]string, error) {
 	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)
-	return scannerUtil.Scanner2Map(scanner, sep, override)
+	return scannerUtil.Scan2Map(scanner, sep, override)
+}
+
+// read file to map[string]string and keys array, each line split by sep, first item as key and second item as value
+func File2MapOrder(fileName, sep string, override bool) (map[string]string, []string, error) {
+	var file, err = os.Open(fileName)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer simpleUtil.DeferClose(file)
+
+	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scan2MapOrder(scanner, sep, override)
 }
 
 // read file to []map[string]string

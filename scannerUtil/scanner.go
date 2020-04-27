@@ -23,7 +23,7 @@ func Scanner2Array(scanner Scanner) []string {
 	return array
 }
 
-func Scanner2Map(scanner Scanner, sep string, override bool) (db map[string]string, err error) {
+func Scan2Map(scanner Scanner, sep string, override bool) (db map[string]string, err error) {
 	db = make(map[string]string)
 	for scanner.Scan() {
 		var line = scanner.Text()
@@ -37,10 +37,29 @@ func Scanner2Map(scanner Scanner, sep string, override bool) (db map[string]stri
 	}
 	var sErr = scanner.Err()
 	if sErr != nil {
-		return db, sErr
-	} else {
-		return
+		err = sErr
 	}
+	return
+}
+
+func Scan2MapOrder(scanner Scanner, sep string, override bool) (db map[string]string, keys []string, err error) {
+	db = make(map[string]string)
+	for scanner.Scan() {
+		var line = scanner.Text()
+		array := strings.Split(line, sep)
+		array = append(array, "NA", "NA")
+		var v, ok = db[array[0]]
+		if ok && v != array[1] && !override {
+			err = errors.New("dup key[" + array[0] + "],different value:[" + v + "]vs[" + array[1] + "]")
+		}
+		db[array[0]] = array[1]
+		keys = append(keys, array[0])
+	}
+	var sErr = scanner.Err()
+	if sErr != nil {
+		err = sErr
+	}
+	return
 }
 
 func ScanTitle(scanner Scanner, sep string, skip *regexp.Regexp) (title []string) {
