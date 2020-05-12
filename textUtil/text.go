@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/liserjrqlxue/goUtil/osUtil"
 	"github.com/liserjrqlxue/goUtil/scannerUtil"
 	"github.com/liserjrqlxue/goUtil/simpleUtil"
 )
@@ -22,10 +23,7 @@ func File2Array(fileName string) []string {
 
 // read file to map[string]string, each line split by sep, first item as key and second item as value
 func File2Map(fileName, sep string, override bool) (map[string]string, error) {
-	var file, err = os.Open(fileName)
-	if err != nil {
-		return nil, err
-	}
+	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)

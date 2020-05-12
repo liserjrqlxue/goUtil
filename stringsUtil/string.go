@@ -31,8 +31,8 @@ func StringPlus(str string, num int) string {
 }
 
 // wrap of strconv.Atoi
-func Atoi(str string) int {
-	var v, e = strconv.Atoi(str)
-	simpleUtil.CheckErr(e)
+func Atoi(str ...string) int {
+	var v, e = strconv.Atoi(str[0])
+	simpleUtil.CheckErr(e, str...)
 	return v
 }
