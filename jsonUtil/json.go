@@ -20,6 +20,18 @@ func JsonIndent(v interface{}, prefix, indent string) (b []byte, err error) {
 	return
 }
 
+func MarshalString(v interface{}) string {
+	var b, err = json.Marshal(v)
+	CheckErr(err)
+	return string(b)
+}
+
+func MarshalIndentString(v interface{}, prefix, indent string) string {
+	var b, err = json.MarshalIndent(v, prefix, indent)
+	CheckErr(err)
+	return string(b)
+}
+
 func Json2file(json []byte, filenName string) error {
 	file, err := os.Create(filenName)
 	if err != nil {
