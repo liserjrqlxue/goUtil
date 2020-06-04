@@ -3,6 +3,35 @@ package xlsxUtil
 import "github.com/liserjrqlxue/goUtil/simpleUtil"
 import "github.com/tealeg/xlsx/v2"
 
+type File struct {
+	*xlsx.File
+}
+
+func NewFile() *File {
+	return &File{xlsx.NewFile()}
+}
+func (excel *File) Save(path string) {
+	simpleUtil.CheckErr(excel.File.Save(path))
+}
+
+func OpenFile(fileName string) *File {
+	var f, err = xlsx.OpenFile(fileName)
+	simpleUtil.CheckErr(err)
+	return &File{f}
+}
+
+func (excel *File) AddSheet(sheetName string) *xlsx.Sheet {
+	var sheet, err = excel.File.AddSheet(sheetName)
+	simpleUtil.CheckErr(err)
+	return sheet
+}
+
+func (excel *File) AppendSheet(sheet xlsx.Sheet, sheetName string) *xlsx.Sheet {
+	var newSheet, err = excel.File.AppendSheet(sheet, sheetName)
+	simpleUtil.CheckErr(err)
+	return newSheet
+}
+
 func AddSheet(excel *xlsx.File, sheetName string) *xlsx.Sheet {
 	var sheet, err = excel.AddSheet(sheetName)
 	simpleUtil.CheckErr(err)
