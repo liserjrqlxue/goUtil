@@ -24,7 +24,7 @@ func File2Array(fileName string) []string {
 // read file to [][]string
 func File2Slice(fileName, sep string) [][]string {
 	var file = osUtil.Open(fileName)
-	simpleUtil.DeferClose(file)
+	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)
 	return scannerUtil.Scanner2Slice(scanner, sep)
