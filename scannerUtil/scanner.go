@@ -23,6 +23,17 @@ func Scanner2Array(scanner Scanner) []string {
 	return array
 }
 
+func Scanner2Slice(scanner Scanner, sep string) [][]string {
+	var slice [][]string
+	for scanner.Scan() {
+		var line = scanner.Text()
+		array := strings.Split(line, sep)
+		slice = append(slice, array)
+	}
+	simpleUtil.CheckErr(scanner.Err())
+	return slice
+}
+
 func Scan2Map(scanner Scanner, sep string, override bool) (db map[string]string, err error) {
 	db = make(map[string]string)
 	for scanner.Scan() {

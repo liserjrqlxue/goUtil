@@ -21,6 +21,15 @@ func File2Array(fileName string) []string {
 	return scannerUtil.Scanner2Array(scanner)
 }
 
+// read file to [][]string
+func File2Slice(fileName, sep string) [][]string {
+	var file = osUtil.Open(fileName)
+	simpleUtil.DeferClose(file)
+
+	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scanner2Slice(scanner, sep)
+}
+
 // read file to map[string]string, each line split by sep, first item as key and second item as value
 func File2Map(fileName, sep string, override bool) (map[string]string, error) {
 	var file = osUtil.Open(fileName)
