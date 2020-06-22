@@ -6,6 +6,10 @@ import (
 	"github.com/liserjrqlxue/goUtil/simpleUtil"
 )
 
+func Hostname() string {
+	return simpleUtil.HandleError(os.Hostname()).(string)
+}
+
 func Create(fileName string) *os.File {
 	var file, err = os.Create(fileName)
 	simpleUtil.CheckErr(err)

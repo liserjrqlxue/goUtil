@@ -21,3 +21,8 @@ func DeferClose(h handle) {
 	err := h.Close()
 	CheckErr(err)
 }
+
+func HandleError(a interface{}, err error) interface{} {
+	CheckErr(err)
+	return a
+}
