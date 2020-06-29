@@ -3,7 +3,6 @@ package textUtil
 import (
 	"bufio"
 	"log"
-	"os"
 	"regexp"
 
 	"github.com/liserjrqlxue/goUtil/osUtil"
@@ -13,8 +12,7 @@ import (
 
 // read file to []string, each line as item
 func File2Array(fileName string) []string {
-	var file, err = os.Open(fileName)
-	simpleUtil.CheckErr(err)
+	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)
@@ -41,10 +39,7 @@ func File2Map(fileName, sep string, override bool) (map[string]string, error) {
 
 // read file to map[string]string and keys array, each line split by sep, first item as key and second item as value
 func File2MapOrder(fileName, sep string, override bool) (map[string]string, []string, error) {
-	var file, err = os.Open(fileName)
-	if err != nil {
-		return nil, nil, err
-	}
+	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)
@@ -53,18 +48,17 @@ func File2MapOrder(fileName, sep string, override bool) (map[string]string, []st
 
 // read file to []map[string]string
 func File2MapArray(fileName, sep string, skip *regexp.Regexp) ([]map[string]string, []string) {
-	file, err := os.Open(fileName)
-	simpleUtil.CheckErr(err)
+	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
-	scanner := bufio.NewScanner(file)
+	var scanner = bufio.NewScanner(file)
 	return scannerUtil.Scanner2MapArray(scanner, sep, skip)
 }
 
 // read files to []map[string]string
 func Files2MapArray(fileNames []string, sep string, skip *regexp.Regexp) (Data []map[string]string, Title []string) {
 	for _, fileName := range fileNames {
-		data, title := File2MapArray(fileName, sep, skip)
+		var data, title = File2MapArray(fileName, sep, skip)
 		for _, item := range data {
 			Data = append(Data, item)
 		}
