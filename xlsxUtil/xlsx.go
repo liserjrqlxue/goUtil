@@ -1,10 +1,13 @@
 package xlsxUtil
 
-import "github.com/liserjrqlxue/goUtil/simpleUtil"
-import "github.com/tealeg/xlsx/v2"
+import (
+	"github.com/tealeg/xlsx/v3"
+
+	"github.com/liserjrqlxue/goUtil/simpleUtil"
+)
 
 type File struct {
-	*xlsx.File
+	File *xlsx.File
 }
 
 func NewFile() *File {
