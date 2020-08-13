@@ -70,3 +70,13 @@ func AddMapArray2Sheet(array []map[string]string, keys []string, sheet *xlsx.She
 		AddMap2Row(item, keys, sheet.AddRow())
 	}
 }
+
+func GetRowArray(idx int, sheet *xlsx.Sheet) (rowArray []string) {
+	var row, err = sheet.Row(idx)
+	simpleUtil.CheckErr(err)
+	for i := 0; i < sheet.MaxCol; i++ {
+		var cell = row.GetCell(i)
+		rowArray = append(rowArray, cell.Value)
+	}
+	return
+}
