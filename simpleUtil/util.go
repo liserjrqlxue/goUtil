@@ -26,3 +26,19 @@ func HandleError(a interface{}, err error) interface{} {
 	CheckErr(err)
 	return a
 }
+
+func Slice2MapArray(slice [][]string) (db []map[string]string) {
+	var title []string
+	for i, array := range slice {
+		if i == 0 {
+			title = array
+		} else {
+			var item = make(map[string]string)
+			for j := range array {
+				item[title[j]] = array[j]
+			}
+			db = append(db, item)
+		}
+	}
+	return
+}
