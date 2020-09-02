@@ -27,8 +27,7 @@ func HandleError(a interface{}, err error) interface{} {
 	return a
 }
 
-func Slice2MapArray(slice [][]string) (db []map[string]string) {
-	var title []string
+func Slice2MapArray(slice [][]string) (db []map[string]string, title []string) {
 	for i, array := range slice {
 		if i == 0 {
 			title = array
@@ -43,9 +42,8 @@ func Slice2MapArray(slice [][]string) (db []map[string]string) {
 	return
 }
 
-func Slice2MapMapArray(slice [][]string, key string) map[string]map[string]string {
-	var db = make(map[string]map[string]string)
-	var title []string
+func Slice2MapMapArray(slice [][]string, key string) (db map[string]map[string]string, title []string) {
+	db = make(map[string]map[string]string)
 	for i, array := range slice {
 		if i == 0 {
 			title = array
@@ -60,7 +58,35 @@ func Slice2MapMapArray(slice [][]string, key string) map[string]map[string]strin
 			db[item[key]] = item
 		}
 	}
-	return db
+	return
+}
+
+func Slice2MapMapArrayMerge(slice [][]string, key, sep string) (db map[string]map[string]string, title []string) {
+	db = make(map[string]map[string]string)
+	for i, array := range slice {
+		if i == 0 {
+			title = array
+			if !IsArrayContain(title, key) {
+				panic("key[" + key + "] not contain!")
+			}
+		} else {
+			var item = make(map[string]string)
+			for j := range array {
+				item[title[j]] = array[j]
+			}
+			var mainKey = item[key]
+			var mainItem, ok = db[mainKey]
+			if ok {
+				for k := range mainItem {
+					mainItem[k] += sep + item[k]
+				}
+			} else {
+				mainItem = item
+			}
+			db[mainKey] = mainItem
+		}
+	}
+	return
 }
 
 func IsArrayContain(array []string, key string) bool {
