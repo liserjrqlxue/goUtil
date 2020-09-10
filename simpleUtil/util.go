@@ -2,6 +2,7 @@ package simpleUtil
 
 import (
 	"log"
+	"strings"
 )
 
 // handle error
@@ -42,20 +43,31 @@ func Slice2MapArray(slice [][]string) (db []map[string]string, title []string) {
 	return
 }
 
-func Slice2MapMapArray(slice [][]string, key string) (db map[string]map[string]string, title []string) {
+func JoinValue(item map[string]string, keys []string, sep string) string {
+	var array []string
+	for _, key := range keys {
+		array = append(array, item[key])
+	}
+	return strings.Join(array, sep)
+}
+
+func Slice2MapMapArray(slice [][]string, keys ...string) (db map[string]map[string]string, title []string) {
 	db = make(map[string]map[string]string)
 	for i, array := range slice {
 		if i == 0 {
 			title = array
-			if !IsArrayContain(title, key) {
-				panic("key[" + key + "] not contain!")
+			for _, key := range keys {
+				if !IsArrayContain(title, key) {
+					panic("keys[" + key + "] not contain!")
+				}
 			}
 		} else {
 			var item = make(map[string]string)
 			for j := range array {
 				item[title[j]] = array[j]
 			}
-			db[item[key]] = item
+			var mainKey = JoinValue(item, keys, "\t")
+			db[mainKey] = item
 		}
 	}
 	return
