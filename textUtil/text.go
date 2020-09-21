@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"regexp"
+	"strings"
 
 	"github.com/liserjrqlxue/goUtil/osUtil"
 	"github.com/liserjrqlxue/goUtil/scannerUtil"
@@ -74,6 +75,22 @@ func Files2MapArray(fileNames []string, sep string, skip *regexp.Regexp) (Data [
 					}
 				}
 			}
+		}
+	}
+	return
+}
+
+// read two column files to map[string]string
+func Files2Map(fileNames, sep string, override bool) (db map[string]string, err error) {
+	db = make(map[string]string)
+	fileList := strings.Split(fileNames, ",")
+	for _, fileName := range fileList {
+		db1, err1 := File2Map(fileName, sep, override)
+		for k, v := range db1 {
+			db[k] = v
+		}
+		if err1 != nil {
+			err = err1
 		}
 	}
 	return
