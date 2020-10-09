@@ -2,6 +2,7 @@ package simpleUtil
 
 import (
 	"log"
+	"regexp"
 	"strings"
 )
 
@@ -74,6 +75,7 @@ func Slice2MapMapArray(slice [][]string, keys ...string) (db map[string]map[stri
 }
 
 func Slice2MapMapArrayMerge(slice [][]string, key, sep string) (db map[string]map[string]string, title []string) {
+	var sepRegexp = regexp.MustCompile(sep)
 	db = make(map[string]map[string]string)
 	for i, array := range slice {
 		if i == 0 {
@@ -83,8 +85,11 @@ func Slice2MapMapArrayMerge(slice [][]string, key, sep string) (db map[string]ma
 			}
 		} else {
 			var item = make(map[string]string)
-			for j := range array {
-				item[title[j]] = array[j]
+			for j, v := range array {
+				if sepRegexp.MatchString(v) {
+					log.Printf("WARN:\t[%d,%d]:[%s] contain sep[%s]\n", i, j, v, sep)
+				}
+				item[title[j]] = v
 			}
 			var mainKey = item[key]
 			var mainItem, ok = db[mainKey]
