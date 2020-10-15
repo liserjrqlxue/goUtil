@@ -57,7 +57,7 @@ func CopyFile(dst, src string) (err error) {
 	if err != nil {
 		return
 	}
-	defer simpleUtil.DeferClose(r)
+	defer simpleUtil.DeferClose(w)
 
 	n, err := io.Copy(w, r)
 	if err != nil {
