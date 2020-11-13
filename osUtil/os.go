@@ -12,10 +12,16 @@ func Hostname() string {
 	return simpleUtil.HandleError(os.Hostname()).(string)
 }
 
-func Create(fileName string) *os.File {
-	var file, err = os.Create(fileName)
-	simpleUtil.CheckErr(err)
-	return file
+func Create(fileName string) (file *os.File) {
+	switch fileName {
+	case "-":
+		file = os.Stdout
+	default:
+		var err error
+		file, err = os.Create(fileName)
+		simpleUtil.CheckErr(err)
+	}
+	return
 }
 
 func Write(file *os.File, b []byte) int {
