@@ -106,6 +106,45 @@ func Slice2MapMapArrayMerge(slice [][]string, key, sep string) (db map[string]ma
 	return
 }
 
+// skip some WARN
+func Slice2MapMapArrayMerge1(slice [][]string, key, sep string, skip map[int]bool) (db map[string]map[string]string, title []string) {
+	var sepRegexp = regexp.MustCompile(sep)
+	db = make(map[string]map[string]string)
+	for i, array := range slice {
+		if i == 0 {
+			title = array
+			if !IsArrayContain(title, key) {
+				panic("key[" + key + "] not contain!")
+			}
+		} else {
+			var item = make(map[string]string)
+			for j, v := range array {
+				if sepRegexp.MatchString(v) {
+					if !skip[j] {
+						var sepStr = sep
+						if sep == "\n" {
+							sepStr = `\n`
+						}
+						log.Printf("WARN:\t[%d,%d]:[%s] contain sep[%s]\n", i, j, v, sepStr)
+					}
+				}
+				item[title[j]] = v
+			}
+			var mainKey = item[key]
+			var mainItem, ok = db[mainKey]
+			if ok {
+				for k := range mainItem {
+					mainItem[k] += sep + item[k]
+				}
+			} else {
+				mainItem = item
+			}
+			db[mainKey] = mainItem
+		}
+	}
+	return
+}
+
 func IsArrayContain(array []string, key string) bool {
 	for _, item := range array {
 		if item == key {
