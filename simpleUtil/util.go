@@ -116,6 +116,11 @@ func Slice2MapMapArrayMerge1(slice [][]string, key, sep string, skip map[int]boo
 			if !IsArrayContain(title, key) {
 				panic("key[" + key + "] not contain!")
 			}
+			var skips []string
+			for index := range skip {
+				skips = append(skips, title[index])
+			}
+			log.Printf("Skip merge warn of %+v", skips)
 		} else {
 			var item = make(map[string]string)
 			for j, v := range array {
