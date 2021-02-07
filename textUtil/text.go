@@ -56,6 +56,15 @@ func File2MapArray(fileName, sep string, skip *regexp.Regexp) ([]map[string]stri
 	return scannerUtil.Scanner2MapArray(scanner, sep, skip)
 }
 
+// read file to map[string]map[string]string
+func File2MapMap(fileName, key, sep string, skip *regexp.Regexp) (map[string]map[string]string, []string) {
+	var file = osUtil.Open(fileName)
+	defer simpleUtil.DeferClose(file)
+
+	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scanner2MapMap(scanner, key, sep, skip)
+}
+
 // read files to []map[string]string
 func Files2MapArray(fileNames []string, sep string, skip *regexp.Regexp) (Data []map[string]string, Title []string) {
 	for _, fileName := range fileNames {

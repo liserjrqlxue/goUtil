@@ -1,6 +1,7 @@
 package scannerUtil
 
 import (
+	"bufio"
 	"errors"
 	"regexp"
 	"strings"
@@ -103,4 +104,28 @@ func Scanner2MapArray(scanner Scanner, sep string, skip *regexp.Regexp) ([]map[s
 	}
 	simpleUtil.CheckErr(scanner.Err())
 	return mapArray, title
+}
+
+func Scanner2MapMap(scanner *bufio.Scanner, key, sep string, skip *regexp.Regexp) (db map[string]map[string]string, title []string) {
+	db = make(map[string]map[string]string)
+	var i = 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		if skip != nil && skip.MatchString(line) {
+			continue
+		}
+		array := strings.Split(line, sep)
+		if i == 0 {
+			title = array
+		} else if title != nil {
+			var dataHash = make(map[string]string)
+			for j := range array {
+				dataHash[title[j]] = array[j]
+			}
+			db[dataHash[key]] = dataHash
+		}
+		i++
+	}
+	simpleUtil.CheckErr(scanner.Err())
+	return
 }
