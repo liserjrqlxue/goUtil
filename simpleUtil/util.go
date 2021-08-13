@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// handle error
+// CheckErr handle error
 func CheckErr(err error, msg ...string) {
 	if err != nil {
 		//panic(err)
@@ -18,7 +18,7 @@ type handle interface {
 	Close() error
 }
 
-// handle error while defer Close()
+// DeferClose handle error while defer Close()
 func DeferClose(h handle) {
 	err := h.Close()
 	CheckErr(err)
