@@ -1,9 +1,10 @@
 package stringsUtil
 
 import (
-	"github.com/liserjrqlxue/goUtil/simpleUtil"
 	"strconv"
 	"strings"
+
+	"github.com/liserjrqlxue/goUtil/simpleUtil"
 )
 
 // try to convert string to given width
@@ -35,4 +36,21 @@ func Atoi(str ...string) int {
 	var v, e = strconv.Atoi(str[0])
 	simpleUtil.CheckErr(e, str...)
 	return v
+}
+
+func Str2MapArray(str, sep1, sep2 string) (ma []map[string]string, title []string) {
+	for i, s := range strings.Split(str, sep1) {
+		if i == 0 {
+			title = strings.Split(s, sep2)
+		} else {
+			var array = strings.Split(s, sep2)
+			var item = make(map[string]string)
+			for j, k := range array {
+				item[title[j]] = k
+			}
+			ma = append(ma, item)
+		}
+
+	}
+	return
 }
