@@ -15,9 +15,11 @@ func JoinDb2MapArray(left []map[string]string, db map[string][]map[string]string
 				}
 				join = append(join, joinItem)
 			}
+		} else {
+			join = append(join, item)
 		}
 	}
-	return left
+	return join
 }
 
 func JoinMapArray(left, right []map[string]string, lKey, rKey string) []map[string]string {
