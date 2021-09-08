@@ -48,6 +48,9 @@ func AddSheets(excel *xlsx.File, sheetNames []string) {
 }
 
 func AddArray2Row(rows []string, row *xlsx.Row) {
+	if row.GetHeight() == 0 {
+		row.SetHeight(14)
+	}
 	for _, str := range rows {
 		row.AddCell().SetString(str)
 	}
@@ -60,6 +63,9 @@ func AddSlice2Sheet(slice [][]string, sheet *xlsx.Sheet) {
 }
 
 func AddMap2Row(item map[string]string, keys []string, row *xlsx.Row) {
+	if row.GetHeight() == 0 {
+		row.SetHeight(14)
+	}
 	for _, key := range keys {
 		row.AddCell().SetString(item[key])
 	}
