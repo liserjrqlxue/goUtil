@@ -2,6 +2,7 @@ package textUtil
 
 import (
 	"bufio"
+	"compress/gzip"
 	"log"
 	"regexp"
 	"strings"
@@ -53,6 +54,19 @@ func File2MapArray(fileName, sep string, skip *regexp.Regexp) ([]map[string]stri
 	defer simpleUtil.DeferClose(file)
 
 	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scanner2MapArray(scanner, sep, skip)
+}
+
+// read gz file to []map[string]string
+func Gz2MapArray(fileName, sep string, skip *regexp.Regexp) ([]map[string]string, []string) {
+	var file = osUtil.Open(fileName)
+	defer simpleUtil.DeferClose(file)
+
+	var gz, err = gzip.NewReader(file)
+	simpleUtil.CheckErr(err)
+	defer simpleUtil.DeferClose(gz)
+
+	var scanner = bufio.NewScanner(gz)
 	return scannerUtil.Scanner2MapArray(scanner, sep, skip)
 }
 
