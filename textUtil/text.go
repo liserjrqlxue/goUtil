@@ -31,7 +31,7 @@ func File2Slice(fileName, sep string) [][]string {
 }
 
 // read gz file to []map[string]string
-func Gz2Slice(fileName, sep string, skip *regexp.Regexp) [][]string {
+func Gz2Slice(fileName, sep string) [][]string {
 	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
