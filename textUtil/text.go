@@ -30,6 +30,19 @@ func File2Slice(fileName, sep string) [][]string {
 	return scannerUtil.Scanner2Slice(scanner, sep)
 }
 
+// read gz file to []map[string]string
+func Gz2Slice(fileName, sep string, skip *regexp.Regexp) [][]string {
+	var file = osUtil.Open(fileName)
+	defer simpleUtil.DeferClose(file)
+
+	var gz, err = gzip.NewReader(file)
+	simpleUtil.CheckErr(err)
+	defer simpleUtil.DeferClose(gz)
+
+	var scanner = bufio.NewScanner(gz)
+	return scannerUtil.Scanner2Slice(scanner, sep)
+}
+
 // read file to map[string]string, each line split by sep, first item as key and second item as value
 func File2Map(fileName, sep string, override bool) (map[string]string, error) {
 	var file = osUtil.Open(fileName)
