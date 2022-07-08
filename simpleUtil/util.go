@@ -76,7 +76,7 @@ func Slice2MapMapArray(slice [][]string, keys ...string) (db map[string]map[stri
 }
 
 func Slice2MapMapArrayMerge(slice [][]string, key, sep string) (db map[string]map[string]string, title []string) {
-	var sepRegexp = regexp.MustCompile(fmt.Sprintf("`%s`", sep))
+	var sepRegexp = regexp.MustCompile(fmt.Sprint(regexp.QuoteMeta(sep)))
 	db = make(map[string]map[string]string)
 	for i, array := range slice {
 		if i == 0 {
