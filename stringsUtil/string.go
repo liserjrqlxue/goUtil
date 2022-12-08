@@ -38,6 +38,13 @@ func Atoi(str ...string) int {
 	return v
 }
 
+// warp of strconv.ParseFloat
+func Atof(str ...string) float64 {
+	var v, e = strconv.ParseFloat(str[0], 32)
+	simpleUtil.CheckErr(e, str...)
+	return v
+}
+
 func Str2MapArray(str, sep1, sep2 string) (ma []map[string]string, title []string) {
 	for i, s := range strings.Split(str, sep1) {
 		if i == 0 {
