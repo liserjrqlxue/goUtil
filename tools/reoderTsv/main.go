@@ -22,7 +22,7 @@ var (
 		"output tsv, default is -input.reorder",
 	)
 	first = flag.String(
-		"frist",
+		"first",
 		"",
 		"columns move to first, sep by comma",
 	)

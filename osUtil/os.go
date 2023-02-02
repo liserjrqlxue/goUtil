@@ -43,13 +43,25 @@ func Open(fileName string) *os.File {
 	return file
 }
 
-// check if a file exists an is not a directory
+// FileExists check if a file exists and is not a directory
 func FileExists(fileName string) bool {
 	info, err := os.Stat(fileName)
 	if os.IsNotExist(err) {
 		return false
 	}
 	return !info.IsDir()
+}
+
+// check if a file is exists and empty
+func FileEmpty(fileName string) bool {
+	info, err := os.Stat(fileName)
+	if os.IsNotExist(err) {
+		return false
+	}
+	if info.Size() == 0 {
+		return true
+	}
+	return false
 }
 
 func CopyFile(dst, src string) (err error) {

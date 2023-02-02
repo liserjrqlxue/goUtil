@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/liserjrqlxue/goUtil/osUtil"
 	"strings"
 
 	"github.com/liserjrqlxue/goUtil/textUtil"
@@ -29,8 +30,20 @@ func main() {
 	}
 	inputList = append(inputList, flag.Args()...)
 	if *title == "" {
+		for _, s := range inputList {
+			if !osUtil.FileEmpty(s) {
+				*title = s
+				break
+			}
+		}
 		*title = inputList[0]
 	}
+
+	// all input files empty
+	if *title == "" {
+		return
+	}
+
 	var _, titles = textUtil.File2MapArray(*title, "\t", nil)
 	fmt.Println(strings.Join(titles, "\t"))
 	for _, s := range inputList {
