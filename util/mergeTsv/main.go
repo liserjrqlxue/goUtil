@@ -36,7 +36,6 @@ func main() {
 				break
 			}
 		}
-		*title = inputList[0]
 	}
 
 	// all input files empty
