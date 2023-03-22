@@ -58,6 +58,7 @@ func main() {
 			if *header {
 				fmtUtil.FprintStringArray(fh, title, "\t")
 			}
+			fhMap[key] = fh
 		}
 		fmtUtil.FprintStringArray(fh, strings, "\t")
 	}
