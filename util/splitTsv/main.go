@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/liserjrqlxue/goUtil/fmtUtil"
 	"github.com/liserjrqlxue/goUtil/osUtil"
 	"github.com/liserjrqlxue/goUtil/simpleUtil"
@@ -54,7 +55,9 @@ func main() {
 		var key = strings[*col-1]
 		var fh, ok = fhMap[key]
 		if !ok {
-			fh = osUtil.Create(*prefix + "." + key + ".tsv")
+			var output = *prefix + "." + key + ".tsv"
+			fh = osUtil.Create(output)
+			fmt.Println(output)
 			if *header {
 				fmtUtil.FprintStringArray(fh, title, "\t")
 			}
