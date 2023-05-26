@@ -12,6 +12,13 @@ func Base16toStr(base [16]byte) string {
 	return fmt.Sprintf("%x", base)
 }
 
+// wrap of fmt.Fprint
+func Fprint(w io.Writer, a ...interface{}) int {
+	var n, err = fmt.Fprint(w, a...)
+	simpleUtil.CheckErr(err)
+	return n
+}
+
 // wrap of fmt.Fprintln
 func Fprintln(w io.Writer, a ...interface{}) int {
 	var n, err = fmt.Fprintln(w, a...)
