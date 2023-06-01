@@ -21,6 +21,15 @@ func File2Array(fileName string) []string {
 	return scannerUtil.Scanner2Array(scanner)
 }
 
+// read file to map[string]bool, each line as item
+func File2Bools(fileName string) map[string]bool {
+	var file = osUtil.Open(fileName)
+	defer simpleUtil.DeferClose(file)
+
+	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scanner2Bools(scanner)
+}
+
 // read file to [][]string
 func File2Slice(fileName, sep string) [][]string {
 	var file = osUtil.Open(fileName)
@@ -90,6 +99,15 @@ func File2MapMap(fileName, key, sep string, skip *regexp.Regexp) (map[string]map
 
 	var scanner = bufio.NewScanner(file)
 	return scannerUtil.Scanner2MapMap(scanner, key, sep, skip)
+}
+
+// read file to map[string]bool
+func File2MapBool(fileName, key, sep string, skip *regexp.Regexp) (map[string]bool, []string) {
+	var file = osUtil.Open(fileName)
+	defer simpleUtil.DeferClose(file)
+
+	var scanner = bufio.NewScanner(file)
+	return scannerUtil.Scanner2MapBool(scanner, key, sep, skip)
 }
 
 // read files to []map[string]string

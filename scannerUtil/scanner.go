@@ -24,6 +24,15 @@ func Scanner2Array(scanner Scanner) []string {
 	return array
 }
 
+func Scanner2Bools(scanner Scanner) map[string]bool {
+	var mb = make(map[string]bool)
+	for scanner.Scan() {
+		mb[scanner.Text()] = true
+	}
+	simpleUtil.CheckErr(scanner.Err())
+	return mb
+}
+
 func Scanner2Slice(scanner Scanner, sep string) [][]string {
 	var slice [][]string
 	for scanner.Scan() {
@@ -123,6 +132,30 @@ func Scanner2MapMap(scanner *bufio.Scanner, key, sep string, skip *regexp.Regexp
 				dataHash[title[j]] = array[j]
 			}
 			db[dataHash[key]] = dataHash
+		}
+		i++
+	}
+	simpleUtil.CheckErr(scanner.Err())
+	return
+}
+
+func Scanner2MapBool(scanner *bufio.Scanner, key, sep string, skip *regexp.Regexp) (db map[string]bool, title []string) {
+	db = make(map[string]bool)
+	var i = 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		if skip != nil && skip.MatchString(line) {
+			continue
+		}
+		array := strings.Split(line, sep)
+		if i == 0 {
+			title = array
+		} else if title != nil {
+			var dataHash = make(map[string]string)
+			for j := range array {
+				dataHash[title[j]] = array[j]
+			}
+			db[dataHash[key]] = true
 		}
 		i++
 	}
