@@ -21,7 +21,13 @@ func MeanVar(x []float64) (mean, variance float64) {
 	return mean, variance / float64(len(x)-1)
 }
 
+// MeanStdDev
 func MeanStdDev(x []float64) (mean, stdDev float64) {
 	mean, stdDev = MeanVar(x)
 	return mean, math.Sqrt(stdDev)
+}
+
+// DivisionInt return float64(x)/float64(y)
+func DivisionInt(x, y int) float64 {
+	return float64(x) / float64(y)
 }

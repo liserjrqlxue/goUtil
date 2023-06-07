@@ -2,6 +2,7 @@ package sge
 
 import (
 	"log"
+	"os"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -9,6 +10,7 @@ import (
 
 var sgeJobId = regexp.MustCompile(`^Your job (\d+) \("\S+"\) has been submitted\n$`)
 
+// WrapSubmit
 func WrapSubmit(submit, script, hjid string, submitArgs []string) (jid string) {
 	if hjid != "" {
 		submitArgs = append(submitArgs, "-hold_jid", hjid)
@@ -29,4 +31,12 @@ func WrapSubmit(submit, script, hjid string, submitArgs []string) (jid string) {
 		log.Fatalf("Error: jid parse error:%v->%v", submitLogBytes, submitLogs)
 	}
 	return
+}
+
+// Run wrap exec.Command(name,args...).Run() with stdout stderr redirect to os.Stdout os.Stderr
+func Run(name string, args ...string) error {
+	var cmd = exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
