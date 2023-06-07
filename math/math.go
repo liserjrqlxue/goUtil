@@ -2,7 +2,7 @@ package math
 
 import "math"
 
-func Sum(x []float64) (sum float64) {
+func SumFloat(x []float64) (sum float64) {
 	for _, v := range x {
 		sum += v
 	}
@@ -30,4 +30,19 @@ func MeanStdDev(x []float64) (mean, stdDev float64) {
 // DivisionInt return float64(x)/float64(y)
 func DivisionInt(x, y int) float64 {
 	return float64(x) / float64(y)
+}
+
+func Sum[G int | float64](x []G) (sum G) {
+	for _, v := range x {
+		sum += v
+	}
+	return
+}
+
+// SumInt sum int
+func SumInt(x []int) (sum int) {
+	for _, v := range x {
+		sum += v
+	}
+	return
 }
