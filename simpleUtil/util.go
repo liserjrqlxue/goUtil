@@ -25,7 +25,7 @@ func DeferClose(h handle) {
 	CheckErr(err)
 }
 
-func HandleError(a interface{}, err error) interface{} {
+func HandleError(a any, err error) any {
 	CheckErr(err)
 	return a
 }
