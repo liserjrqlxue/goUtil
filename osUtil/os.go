@@ -9,7 +9,7 @@ import (
 )
 
 func Hostname() string {
-	return simpleUtil.HandleError(os.Hostname()).(string)
+	return simpleUtil.HandleError(os.Hostname())
 }
 
 func Create(fileName string) (file *os.File) {

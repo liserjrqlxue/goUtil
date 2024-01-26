@@ -25,7 +25,7 @@ func DeferClose(h handle) {
 	CheckErr(err)
 }
 
-func HandleError(a any, err error) any {
+func HandleError[T any](a T, err error) T {
 	CheckErr(err)
 	return a
 }
