@@ -70,24 +70,54 @@ type Ordered interface {
 	Integer | Float | ~string
 }
 
-type Pair[T Ordered, U any] struct {
-	sortable   T
-	unsortable U
+type Pair[O Ordered, T any] struct {
+	unsortable T
+	sortable   O
+}
+
+type Pair2[O Ordered, T any] struct {
+	unsortable T
+	sortable1  O
+	sortable2  O
 }
 
 // SortSlice sorts the elements of the sortable slice and reorders the unsortable slice accordingly.
-func SortSlice[T Ordered, U any](sortable []T, unsortable []U) {
+func SortSlice[O Ordered, T any](unsortable []T, sortable []O) {
 	// 创建一个辅助结构体，用于存储 sortable 和 unsortable 中的元素对
 
 	// 创建一个 Pair 的 slice，用于存储 sortable 和 unsortable 中的元素对
-	pairs := make([]Pair[T, U], len(sortable))
+	pairs := make([]Pair[O, T], len(sortable))
 	for i := range sortable {
-		pairs[i] = Pair[T, U]{sortable[i], unsortable[i]}
+		pairs[i] = Pair[O, T]{unsortable[i], sortable[i]}
 	}
 
 	// 按照 sortable 的顺序对 pairs 进行排序
 	sort.Slice(pairs, func(i, j int) bool {
 		return pairs[i].sortable < pairs[j].sortable
+	})
+
+	// 将排序后的 unsortable 的值赋回给原始的 unsortable slice
+	for i, pair := range pairs {
+		unsortable[i] = pair.unsortable
+	}
+}
+
+// SortSlice2 sorts the elements of the sortable slice and reorders the unsortable slice accordingly.
+func SortSlice2[O Ordered, T any](unsortable []T, sortable1, sortable2 []O) {
+	// 创建一个辅助结构体，用于存储 sortable 和 unsortable 中的元素对
+
+	// 创建一个 Pair 的 slice，用于存储 sortable 和 unsortable 中的元素对
+	pairs := make([]Pair2[O, T], len(unsortable))
+	for i := range unsortable {
+		pairs[i] = Pair2[O, T]{unsortable[i], sortable1[i], sortable2[i]}
+	}
+
+	// 按照 sortable 的顺序对 pairs 进行排序
+	sort.Slice(pairs, func(i, j int) bool {
+		if pairs[i].sortable1 == pairs[j].sortable1 {
+			return pairs[i].sortable2 < pairs[j].sortable2
+		}
+		return pairs[i].sortable1 < pairs[j].sortable1
 	})
 
 	// 将排序后的 unsortable 的值赋回给原始的 unsortable slice
