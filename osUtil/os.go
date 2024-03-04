@@ -1,9 +1,12 @@
 package osUtil
 
 import (
+	"embed"
 	"io"
+	"io/fs"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/liserjrqlxue/goUtil/simpleUtil"
 )
@@ -41,6 +44,17 @@ func Open(fileName string) *os.File {
 	var file, err = os.Open(fileName)
 	simpleUtil.CheckErr(err)
 	return file
+}
+
+func OpenFS(fileName, dirName string, fs embed.FS) fs.File {
+	var path = filepath.Join(dirName, fileName)
+	if FileExists(path) {
+		return Open(path)
+	} else {
+		file, err := fs.Open(fileName)
+		simpleUtil.CheckErr(err)
+		return file
+	}
 }
 
 // FileExists check if a file exists and is not a directory
