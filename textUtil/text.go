@@ -17,8 +17,7 @@ func File2Array(fileName string) []string {
 	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
-	var scanner = bufio.NewScanner(file)
-	return scannerUtil.Scanner2Array(scanner)
+	return osUtil.FS2Array(file)
 }
 
 // read file to map[string]bool, each line as item
@@ -75,8 +74,7 @@ func File2MapArray(fileName, sep string, skip *regexp.Regexp) ([]map[string]stri
 	var file = osUtil.Open(fileName)
 	defer simpleUtil.DeferClose(file)
 
-	var scanner = bufio.NewScanner(file)
-	return scannerUtil.Scanner2MapArray(scanner, sep, skip)
+	return osUtil.FS2MapArray(file, sep, skip)
 }
 
 // read gz file to []map[string]string
