@@ -20,7 +20,7 @@ func WrapSubmit(submit, script, hjid string, submitArgs []string) (jid string) {
 	log.Printf("%s [%s]", submit, strings.Join(cmds, "]["))
 	var submitLogBytes, err = c.CombinedOutput()
 	if err != nil {
-		log.Fatal("Error: %v:[%v]", err, submitLogBytes)
+		log.Fatalf("Error: %v:[%v]", err, submitLogBytes)
 	}
 	// Your job (\d+) \("script"\) has been submitted
 	log.Print(submitLogBytes)
@@ -38,5 +38,7 @@ func Run(name string, args ...string) error {
 	var cmd = exec.Command(name, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	// add os.Envrion
+	// cmd.Env = os.Environ()
 	return cmd.Run()
 }
