@@ -40,10 +40,17 @@ func WriteClose(file *os.File, b []byte) int {
 	return n
 }
 
-func Open(fileName string) *os.File {
-	var file, err = os.Open(fileName)
-	simpleUtil.CheckErr(err)
-	return file
+// Open '-' as os.Stdin, others as file and check err
+func Open(fileName string) (file *os.File) {
+	switch fileName {
+	case "-":
+		file = os.Stdin
+	default:
+		var err error
+		file, err = os.Open(fileName)
+		simpleUtil.CheckErr(err)
+	}
+	return
 }
 
 func OpenFS(fileName, dirName string, fs embed.FS) fs.File {
