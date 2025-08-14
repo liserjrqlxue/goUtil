@@ -2,6 +2,7 @@ package compress
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -44,7 +45,7 @@ func AddToZip(zw *zip.Writer, filePath, fileName string) error {
 	return err
 }
 
-func ZipFiles(target string, source ...string) error {
+func ZipFilesOld(target string, source ...string) error {
 	zipfile, err := os.Create(target)
 	if err != nil {
 		return err
@@ -180,4 +181,41 @@ func ZipBySystem(outputZip string, files []string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+// ZipFiles 压缩多个文件/目录
+// mode: "purego" 或 "system"
+// rootDir: 全局相对路径的根目录（必须是已存在的父目录，否则报错）
+// patterns: 支持文件路径、目录、通配符（glob）
+func ZipFiles(outputZip, mode, rootDir string, patterns ...string) error {
+	// 检查 rootDir
+	rootDirAbs, err := filepath.Abs(rootDir)
+	if err != nil {
+		return fmt.Errorf("解析 rootDir 失败: %w", err)
+	}
+	if stat, err := os.Stat(rootDirAbs); err != nil || !stat.IsDir() {
+		return fmt.Errorf("rootDir 必须是存在的目录: %s", rootDir)
+	}
+
+	// 展开通配符
+	var fileList []string
+	for _, pattern := range patterns {
+		matches, err := filepath.Glob(pattern)
+		if err != nil {
+			return fmt.Errorf("通配符解析失败 %s: %w", pattern, err)
+		}
+		if len(matches) == 0 {
+			return fmt.Errorf("未匹配到文件: %s", pattern)
+		}
+		fileList = append(fileList, matches...)
+	}
+
+	if len(fileList) == 0 {
+		return fmt.Errorf("没有文件可压缩")
+	}
+
+	if mode == "system" {
+		return ZipBySystem(outputZip, fileList)
+	}
+	return ZipPureGo(outputZip, fileList, rootDirAbs)
 }
