@@ -107,7 +107,9 @@ func Scanner2MapArray(scanner Scanner, sep string, skip *regexp.Regexp) ([]map[s
 		array := strings.Split(line, sep)
 		var dataHash = make(map[string]string)
 		for j, k := range array {
-			dataHash[title[j]] = k
+			if j < len(title) {
+				dataHash[title[j]] = k
+			}
 		}
 		mapArray = append(mapArray, dataHash)
 	}
