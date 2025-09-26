@@ -1,6 +1,7 @@
 package simpleUtil
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"reflect"
@@ -11,8 +12,17 @@ import (
 // CheckErr handle error
 func CheckErr(err error, msg ...string) {
 	if err != nil {
-		//panic(err)
-		log.Fatal(err, msg)
+		// 构建完整的错误消息
+		fullMsg := err.Error()
+		if len(msg) > 0 {
+			fullMsg = fmt.Sprintf("%s: %s", strings.Join(msg, " "), fullMsg)
+		}
+
+		// 使用 log.Printf 进行格式化输出，包含时间戳
+		log.Printf("FATAL: %s", fullMsg)
+
+		// 触发 panic
+		panic(errors.New(fullMsg))
 	}
 }
 
@@ -168,6 +178,15 @@ func ShallowCopy(src any) any {
 	}
 
 	srcVal := reflect.ValueOf(src)
+
+	if srcVal.Kind() == reflect.Ptr {
+		srcVal = srcVal.Elem()
+	}
+
+	if srcVal.Kind() != reflect.Struct {
+		panic("ShallowCopy: src must be a struct or pointer to struct")
+	}
+
 	srcType := reflect.TypeOf(src)
 
 	// 创建一个新的实例
